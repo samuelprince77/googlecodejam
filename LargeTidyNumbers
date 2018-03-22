@@ -1,0 +1,125 @@
+import javax.swing.*;
+import java.io.*;
+import java.math.BigInteger;
+
+/**
+ * Created by Samuel Prince on 13/09/2017.
+ */
+public class LargeTidyNumbers {
+    public static void main(String[] args) throws Exception{
+
+        String inputFilePath = "";
+        String outputFilePath = "";
+
+        //select directory to open file
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            inputFilePath = selectedFile.getAbsolutePath();
+        }
+
+        //location of data file
+        FileReader file = new FileReader(inputFilePath);
+        BufferedReader reader = new BufferedReader(file);
+
+        // TODO
+        //The save dialog appears immediately after the open dialog.
+        //Once the save dialog pops up simply change the name of the file so it can be stored correctly
+
+        //select directory to save file
+        int saveResult = fileChooser.showSaveDialog(null);
+        if (saveResult == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            outputFilePath = selectedFile.getAbsolutePath();
+        }
+
+        //output of data file
+        File newFile = new File(outputFilePath);
+        if(newFile.exists()){
+            System.out.println("File already exists");
+        }
+
+        newFile.createNewFile();
+        FileWriter fileWriter = new FileWriter(newFile);
+        final BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+        String text = "";
+        int caseNumber = 0;
+        //read input line by line
+        String line = reader.readLine();
+
+        while(line!=null){
+            //if condition prevents the 1st input from being checked as a test case
+            if(caseNumber < 1){
+                caseNumber +=1;
+                line = reader.readLine();
+            }else if(caseNumber >=1){
+                text = line;
+                final char ar[] = new char [text.length()];
+                for (int c = 0; c < text.length(); c++)
+                {
+                    ar[c] = text.charAt(c);
+                }
+                while(!tidyChecker(text)) {
+                    for (int l = 0; l < text.length() - 1; l++) {
+                        while (ar[l] > ar[l + 1]) {
+                            ar[l] -= 1;
+                            for (int m = l + 1; m < text.length(); m++) {
+                                ar[m] = '9';
+                            }
+                        }
+                    }
+                    text = new String(ar);
+                }
+
+                String string = new String(ar);
+                // gets rid of leading 0's
+                string = string.replaceFirst ("^0*", "");
+
+                String output = "Case #"+ caseNumber + ": " + string + "\n";
+                bufferedWriter.write(output);
+
+                line = reader.readLine();
+                caseNumber += 1;
+            }
+        }
+        reader.close();
+        bufferedWriter.close();
+    }
+
+    //takes the input string and compares characters, if previous character is greater than the next,
+    //count becomes 0 and the method returns false i.e number is not tidy
+    private static boolean tidyChecker(String text){
+        BigInteger textValue = new BigInteger(text);
+        //random value used to keep track
+        int count = 10;
+        text = String.valueOf(textValue);
+
+        char ar[] = new char [text.length()];
+        for (int c = 0; c < text.length(); c++)
+        {
+            ar[c] = text.charAt(c);
+        }
+        for (int l = 0; l < text.length(); l++)
+        {
+            for (int m = l + 1; m < text.length(); m++)
+            {
+                if (ar[l] > ar[m])
+                {
+                    count *= 0;
+                }
+                else if (ar[l] < ar[m]){
+                    count *= 1;
+                }else if(ar[l] == ar[m] ){
+                    count *= 1;
+                }
+            }
+        }
+        return count != 0;
+    }
+}
+
+
+
