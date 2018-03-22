@@ -1,8 +1,8 @@
 # googlecodejam
 These are solutions to some of the googlecodejam problems i have attempted to solve. The all pass the google judge system.
 
-## How they work
-# Pancake Flipper Solution:
+# How they work
+## Pancake Flipper Solution:
 
 In order to solve this problem, I read the input strings from the input file line by line and split each input string by space. The split creates an array with two elements, the first one being the string S and the second being K. A condition is also set to prevent the first string input from being cosidered in the test cases as it specifies the number of test cases.
 
@@ -12,7 +12,7 @@ The loop keeps on going until the entire output consists of only “t” i.e. al
 
 I found that the same solution could be applied to both the small and large data sets without much effect to the computation time.
 
-# Tidy numbers solution:
+## Tidy numbers solution:
 
 For this problem, I developed two programs. One to handle the small data set and another to handle the big data set.
 
